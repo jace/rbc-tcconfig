@@ -5,7 +5,7 @@ echo verified, for now. Future versions of this test will automate this.
 echo
 echo 1. Adding eth0:0 interface as static with no gateway
 cp -f interfaces1 interfaces1_test
-python ../rbc_iface_patch.py -f interfaces1_test -t static -i 192.168.10.1 eth0:0
+python ../rbc_iface_patch.py -f interfaces1_test -t static -i 192.168.42.1 eth0:0
 diff -u interfaces1 interfaces1_test
 
 echo ----------------------------------------------------------------------

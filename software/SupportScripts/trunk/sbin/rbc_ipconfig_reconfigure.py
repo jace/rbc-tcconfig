@@ -83,13 +83,13 @@ def updateResolvConf(nameservers, filename):
     This function will update the dns information:
     
         >>> tempname = os.tempnam('/tmp')
-        >>> updateResolvConf(['192.168.1.13','192.168.10.13'], tempname)
+        >>> updateResolvConf(['192.168.1.13','192.168.42.13'], tempname)
         >>> lines = open(tempname,'r').readlines()
         >>> linepresent = 0
         >>> if lines[0] == 'nameserver 192.168.1.13\\n':
         ...     linepresent += 1
         ...
-        >>> if lines[1] == 'nameserver 192.168.10.13\\n':
+        >>> if lines[1] == 'nameserver 192.168.42.13\\n':
         ...     linepresent += 1
         ...
         >>> linepresent
