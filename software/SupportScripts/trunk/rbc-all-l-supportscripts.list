@@ -5,7 +5,7 @@
 %readme README
 %description Support scripts
 %version 0.0.31
-%release 3
+%release 4
 
 %requires lighttpd
 %requires python2.5
