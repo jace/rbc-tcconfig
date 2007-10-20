@@ -5,9 +5,6 @@ PackageGraph generates a .dot file (for GraphViz) showing dependencies
 between packages. It currently only works for EPM .list definition
 files.
 
-A future enhancement will allow grouping nodes on the basis of regex
-matches and specification of colours.
-
 Usage: PackageGraph.py [options] output.dot package1.list ...
 
 Call "PackageGraph.py -h" for full list of options.
@@ -113,8 +110,7 @@ def _markDependenciesRecurse(basepackage, packagedict, packageproviders):
 def markDependencies(bases, packages):
     """
     Given a list of base packages, recursively marks packages as being
-    required to install the base packages. Not very clever about
-    conflicts and virtual packages provided by other packages.
+    required to install the base packages.
     """
     packagedict = {}
     packageproviders = {}
