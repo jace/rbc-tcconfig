@@ -2,6 +2,7 @@
 
 import cgi
 import os
+import sys
 import subprocess
 
 print "Content-Type: text/html"
@@ -21,18 +22,21 @@ if form.has_key('submit'):
     # Do apt upgrade now and display results.
     print """<h2>Updating list of available software</h2>"""
     print "<pre>"
-    process = subprocess.Popen("sudo apt-get -y update", env=os.environ,
+    sys.stdout.flush()
+    process = subprocess.Popen(["sudo", "apt-get", "-y", "update"], env=os.environ,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     while process.poll() is None:
         for line in process.stdout.readlines():
             print cgi.escape(line)
         for line in process.stderr.readlines():
             print cgi.escape(line)
+        sys.stdout.flush()
     print "</pre>"
     print """<h2>Downloading and installing updates</h2>"""
     print "<pre>"
-    process = subprocess.Popen(
-            "sudo apt-get -y --allow-unauthenticated dist-upgrade",
+    sys.stdout.flush()
+    process = subprocess.Popen(["sudo", "apt-get", "-y",
+            "--allow-unauthenticated", "dist-upgrade"],
             env=os.environ,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
@@ -41,6 +45,7 @@ if form.has_key('submit'):
             print cgi.escape(line)
         for line in process.stderr.readlines():
             print cgi.escape(line)
+        sys.stdout.flush()
     print "</pre>"
 else:
     # Display submit button
