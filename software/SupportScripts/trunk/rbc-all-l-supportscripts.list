@@ -4,8 +4,8 @@
 %license COPYING
 %readme README
 %description Support scripts
-%version 0.0.31
-%release 4
+%version 0.0.32
+%release 1
 
 %requires lighttpd
 %requires python2.5
@@ -26,6 +26,7 @@ f 0555 root root /usr/lib/cgi-bin/ipconfig.cgi cgi-bin/ipconfig.cgi
 f 0555 root root /usr/lib/cgi-bin/printer.cgi cgi-bin/printer.cgi
 f 0555 root root /usr/lib/cgi-bin/dialer.cgi cgi-bin/dialer.cgi
 f 0555 root root /usr/lib/cgi-bin/pingtest.cgi cgi-bin/pingtest.cgi
+f 0555 root root /usr/lib/cgi-bin/upgrade.cgi cgi-bin/upgrade.cgi
 d 0555 root root /var/www/config -
 f 0444 root root /var/www/config/index.html html/index.html 
 f 0444 root root /var/www/styles.css html/styles.css

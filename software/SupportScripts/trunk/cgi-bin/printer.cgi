@@ -58,7 +58,7 @@ elif form.has_key('refresh'):
   <body>
 """
     print '<form action="" method="post">'
-  
+
     lst = os.popen('lpinfo -v').readlines()
     for line in lst:
         for printer in printerlist:
@@ -74,7 +74,8 @@ elif form.has_key('refresh'):
             print """<tr><td><input type="radio" name="%s" value="%s" %s></td><td>%s</td>""" % (printer.subst_str, values[1][:-1], (firstdevice and 'checked="checked" /' or ' /'), values[1][:-1])
             firstdevice = False
         print "</table>"
-    print """<input type="Submit" name="submit" value="Configure Printers"></form></body></html>"""  
+    print """<input type="submit" name="submit"
+    value="Configure Printers" /></form></body></html>"""  
 else:
     print """
     <meta http-equiv="Refresh" content="0; url=%s?refresh=1" />
