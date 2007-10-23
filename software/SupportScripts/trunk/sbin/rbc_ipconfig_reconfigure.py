@@ -10,6 +10,8 @@ from optparse import OptionParser
 
 domainname = "rbc.comat.com"
 
+# FIXME: Use domainname from /etc/maildomain if present.
+
 def updateHosts(hostsfile, hostname, domainname, hostnamefile):
     """
     This function will update hosts file ::

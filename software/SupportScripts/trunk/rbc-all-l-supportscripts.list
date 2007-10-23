@@ -4,7 +4,7 @@
 %license COPYING
 %readme README
 %description Support scripts
-%version 0.0.33
+%version 0.2.0
 %release 1
 
 %requires lighttpd

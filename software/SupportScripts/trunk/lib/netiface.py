@@ -50,7 +50,10 @@ def readNameServers(resolvfile="/etc/resolv.conf"):
             tokens = line.split(' ')
             while '' in tokens:
                 tokens.remove('')
-            nameservers.append(tokens[1])
+            try:
+                nameservers.append(tokens[1])
+            except IndexError:
+                pass
     return nameservers
 
 def readInterface(interfacesfile, ifname):
