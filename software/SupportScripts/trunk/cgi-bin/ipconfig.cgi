@@ -55,6 +55,8 @@ else:
     <p>Current configuration:</p>
     <pre>%s
     </pre>""" % cgi.escape(iface.render())
+    print """<p>Current network status</p><pre>
+    </pre>""" % cgi.escape(os.popen('ifconfig eth0').read)
     print """
     <h2>New Configuration</h2>
     <p><label for="hostname">Hostname</label>
