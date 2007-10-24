@@ -51,7 +51,10 @@ if form.has_key('submit'):
     prin, prout = os.popen2(printer_reconfigure_command)
     prin.write(templatefile)
     prin.close()
-    print "</body></html>"
+    print """<form action="" method="post">
+      <input type="submit" name="restart" value="Restart Printer
+      Subsystem" /></form>
+      </body></html>"""
 elif form.has_key('refresh'):
     print """
   </head>
@@ -76,6 +79,14 @@ elif form.has_key('refresh'):
         print "</table>"
     print """<input type="submit" name="submit"
     value="Configure Printers" /></form></body></html>"""  
+elif form.has_key('restart'):
+    print """
+  </head>
+  <body>
+"""
+    print "<h1>Restarting printer subsystem</h1>"
+    os.system("sudo /etc/init.d/cupsys restart &> /dev/null")
+    print "<p>done.</p>"
 else:
     print """
     <meta http-equiv="Refresh" content="0; url=%s?refresh=1" />
