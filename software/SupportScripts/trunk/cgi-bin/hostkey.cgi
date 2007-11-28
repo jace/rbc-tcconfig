@@ -5,7 +5,7 @@ import os
 import sys
 import subprocess
 
-def keyGenAllowed(self):
+def keyGenAllowed():
     """Returns True if this machine needs host key regeneration."""
     if os.path.exists("/etc/ssh/.rbchostkey"):
         return False

@@ -20,11 +20,11 @@ rm -f ~manager/.ssh/id_dsa ~manager/.ssh/id_dsa.pub
 echo "Making new host keys..."
 /var/lib/dpkg/info/openssh-server.postinst configure
 
-mkdir ~manager/.ssh
+mkdir ~manager/.ssh 2> /dev/null
 chown manager:manager ~manager/.ssh
 chmod 700 ~manager/.ssh
 
-su - manager -c "cd ~/.ssh; ssh-keygen -q -t rsa -N ''; ssh-keygen -q -t dsa -N ''"
+su - manager -c "cd ~/.ssh; ssh-keygen -q -f id_rsa -t rsa -N ''; ssh-keygen -q -f id_dsa -t dsa -N ''"
 
 # Set a flag so this script isn't called again
 touch /etc/ssh/.rbchostkey
@@ -36,4 +36,4 @@ fi
 
 echo "Mailing public keys..."
 filemailer -s "SSH Host: $(cat /etc/hostname)" -n -a /etc/ssh/ssh_host_dsa_key.pub -a /etc/ssh/ssh_host_rsa_key.pub hostkey@"$MAILDOMAIN"
-filemailer -s "SSH Manager: $(cat /etc/hostname)" -n -a ~manager/.ssh/id_rsa.pub -a ~manager/.ssh/id_dsa.pub
+filemailer -s "SSH manager: $(cat /etc/hostname)" -n -a ~manager/.ssh/id_rsa.pub -a ~manager/.ssh/id_dsa.pub hostkey@"$MAILDOMAIN"
