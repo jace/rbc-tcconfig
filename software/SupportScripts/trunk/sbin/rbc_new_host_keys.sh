@@ -18,7 +18,7 @@ rm -f ~manager/.ssh/id_dsa ~manager/.ssh/id_dsa.pub
 
 # Regenerate keys
 echo "Making new host keys..."
-/var/lib/dpkg/info/openssh-server.postinst configure
+/var/lib/dpkg/info/openssh-server.postinst configure 2> /dev/null
 
 mkdir ~manager/.ssh 2> /dev/null
 chown manager:manager ~manager/.ssh
