@@ -4,12 +4,14 @@
 %license COPYING
 %readme README
 %description Support scripts
-%version 0.2.1
+%version 0.2.2
 %release 1
 
 %requires lighttpd
 %requires python2.5
 %requires postfix
+%requires openssh-server
+%requires gnupg
 
 %postinstall <<EOF
 chown root:www-data /usr/sbin/rbc_printers_reconfigure
@@ -27,10 +29,12 @@ f 0555 root root /usr/lib/cgi-bin/printer.cgi cgi-bin/printer.cgi
 f 0555 root root /usr/lib/cgi-bin/dialer.cgi cgi-bin/dialer.cgi
 f 0555 root root /usr/lib/cgi-bin/pingtest.cgi cgi-bin/pingtest.cgi
 f 0555 root root /usr/lib/cgi-bin/upgrade.cgi cgi-bin/upgrade.cgi
+f 0555 root root /usr/lib/cgi-bin/hostkey.cgi cgi-bin/hostkey.cgi
 d 0555 root root /var/www/config -
 f 0444 root root /var/www/config/index.html html/index.html 
 f 0444 root root /var/www/styles.css html/styles.css
 f 0444 root root /usr/lib/python2.5/site-packages/netiface.py lib/netiface.py
+f 0755 root root /usr/sbin/rbc_new_host_keys sbin/rbc_new_host_keys.sh
 f 0755 root root /usr/sbin/rbc_iface_patch sbin/rbc_iface_patch.py
 f 0550 root www-data /usr/sbin/rbc_ipconfig_reconfigure sbin/rbc_ipconfig_reconfigure.py
 f 0550 root www-data /usr/sbin/rbc_printers_reconfigure sbin/rbc_printers_reconfigure
