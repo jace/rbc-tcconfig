@@ -1,0 +1,3 @@
+Q: Why does this folder contain CGI scripts that mix Python code and HTML? That's so primitive.
+
+A: Because these scripts are meant to be used only once, when the machine is first configured. Given memory constraints and the single use profile, it does not make sense to drag in a full web framework. If you have any ideas for a super lightweight template framework that is contained in a single module, do tell us -- we could do with having prettier pages.
