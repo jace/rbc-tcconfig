@@ -1,11 +1,11 @@
 %product rbc-all-l-supportscripts
-%copyright Copyright Reserved. Please consult application documentation within Windows.
+%copyright Copyright (C) 2007, 2008, Comat Technologies Pvt Ltd.
 %vendor Comat
 %license COPYING
 %readme README
-%description Support scripts
+%description Provides support scripts for a variety of basic functions, including CGI scripts for system configuration.
 %version 0.2.4
-%release 1
+%release 2
 
 %requires lighttpd
 %requires python2.5
