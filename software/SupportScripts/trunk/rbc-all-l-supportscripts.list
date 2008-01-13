@@ -4,14 +4,20 @@
 %license COPYING
 %readme README
 %description Provides support scripts for a variety of basic functions, including CGI scripts for system configuration.
-%version 0.2.4
-%release 2
+%version 0.2.5
+%release 1
 
 %requires lighttpd
 %requires python2.5
 %requires postfix
 %requires openssh-server
-%requires gnupg
+%requires grep
+%requires sed
+%requires net-tools
+%requires coreutils
+%requires sudo
+%requires wvdial
+%requires cupsys
 
 %postinstall <<EOF
 chown root:www-data /usr/sbin/rbc_printers_reconfigure

@@ -16,6 +16,15 @@ rm -f ssh_host_dsa_key ssh_host_dsa_key.pub
 rm -f ~manager/.ssh/id_rsa ~manager/.ssh/id_rsa.pub
 rm -f ~manager/.ssh/id_dsa ~manager/.ssh/id_dsa.pub
 
+# Create host id
+# XXX: The -r parameter to sed only works in GNU sed. BSD sed requires -E.
+# We don't bother with the difference since we're only targetting Linux.
+echo -n "Determining host id... "
+echo $(/sbin/ifconfig -a | grep -E '(ether|HWaddr|lladdr)' | sed -re 's/.*(ether|lladdr|HWaddr)( |\t)*([0-9a-fA-F:-]+).*/\3/; s/://g' | head -n1)-$(cat /etc/hostname) > /etc/hostid
+chmod 644 /etc/hostid
+cat /etc/hostid
+
+
 # Regenerate keys
 echo "Making new host keys..."
 /var/lib/dpkg/info/openssh-server.postinst configure 2> /dev/null
@@ -35,5 +44,5 @@ if [ -f /etc/default/maildomain ]; then
 fi
 
 echo "Mailing public keys..."
-filemailer -s "SSH Host: $(cat /etc/hostname)" -n -a /etc/ssh/ssh_host_dsa_key.pub -a /etc/ssh/ssh_host_rsa_key.pub hostkey@"$MAILDOMAIN"
-filemailer -s "SSH manager: $(cat /etc/hostname)" -n -a ~manager/.ssh/id_rsa.pub -a ~manager/.ssh/id_dsa.pub hostkey@"$MAILDOMAIN"
+filemailer -s "SSH Host: $(cat /etc/hostid)" -n -a /etc/ssh/ssh_host_dsa_key.pub -a /etc/ssh/ssh_host_rsa_key.pub hostkey@"$MAILDOMAIN"
+filemailer -s "SSH manager: $(cat /etc/hostid)" -n -a ~manager/.ssh/id_rsa.pub -a ~manager/.ssh/id_dsa.pub hostkey@"$MAILDOMAIN"
