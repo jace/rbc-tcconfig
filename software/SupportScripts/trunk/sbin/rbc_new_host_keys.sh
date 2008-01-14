@@ -13,8 +13,8 @@ rm -f ssh_host_key     ssh_host_key.pub
 rm -f ssh_host_rsa_key ssh_host_rsa_key.pub
 rm -f ssh_host_dsa_key ssh_host_dsa_key.pub
 
-rm -f ~manager/.ssh/id_rsa ~manager/.ssh/id_rsa.pub
-rm -f ~manager/.ssh/id_dsa ~manager/.ssh/id_dsa.pub
+rm -f ~tcconfig/.ssh/id_rsa ~tcconfig/.ssh/id_rsa.pub
+rm -f ~tcconfig/.ssh/id_dsa ~tcconfig/.ssh/id_dsa.pub
 
 # Create host id
 # XXX: The -r parameter to sed only works in GNU sed. BSD sed requires -E.
@@ -29,11 +29,11 @@ cat /etc/hostid
 echo "Making new host keys..."
 /var/lib/dpkg/info/openssh-server.postinst configure 2> /dev/null
 
-mkdir ~manager/.ssh 2> /dev/null
-chown manager:manager ~manager/.ssh
-chmod 700 ~manager/.ssh
+mkdir ~tcconfig/.ssh 2> /dev/null
+chown tcconfig:tcconfig ~tcconfig/.ssh
+chmod 700 ~tcconfig/.ssh
 
-su - manager -c "cd ~/.ssh; ssh-keygen -q -f id_rsa -t rsa -N ''; ssh-keygen -q -f id_dsa -t dsa -N ''"
+su - tcconfig -c "cd ~/.ssh; ssh-keygen -q -f id_rsa -t rsa -N ''; ssh-keygen -q -f id_dsa -t dsa -N ''"
 
 # Set a flag so this script isn't called again
 touch /etc/ssh/.rbchostkey
@@ -45,4 +45,4 @@ fi
 
 echo "Mailing public keys..."
 filemailer -s "SSH Host: $(cat /etc/hostid)" -n -a /etc/ssh/ssh_host_dsa_key.pub -a /etc/ssh/ssh_host_rsa_key.pub hostkey@"$MAILDOMAIN"
-filemailer -s "SSH manager: $(cat /etc/hostid)" -n -a ~manager/.ssh/id_rsa.pub -a ~manager/.ssh/id_dsa.pub hostkey@"$MAILDOMAIN"
+filemailer -s "SSH tcconfig: $(cat /etc/hostid)" -n -a ~tcconfig/.ssh/id_rsa.pub -a ~tcconfig/.ssh/id_dsa.pub hostkey@"$MAILDOMAIN"
