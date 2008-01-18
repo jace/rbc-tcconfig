@@ -55,6 +55,8 @@ import win32api, win32event, win32file, win32pipe, win32process, win32security
 import win32service, win32serviceutil
 import servicemanager
 import _winreg as wreg
+from ConfigParser import RawConfigParser
+import subprocess
 
 
 import traceback
@@ -180,7 +182,25 @@ class RBCService(win32serviceutil.ServiceFramework):
 
     def SvcDoRun(self):
         self.logmsg(servicemanager.PYS_SERVICE_STARTED)
-        win32api.Sleep(1000)
+        MyReg = WindowsRegistry()
+        filename = MyReg.get("WinBootScriptList")
+        config = RawConfigParser()
+        try:
+            config.readfp(open(filename))
+        except:
+            self.error("Can not open the ini file " + filename)
+        for section in config.sections():
+            exename = config.get(section,"exec")
+            args = config.get(section,"args")
+            command = [exename,] 
+            command.extend(args.split(' '))
+            self.info(str(command))
+            try:
+                os.system(' '.join(command))
+
+                #process = subprocess.Popen(command, env=os.environ, stderr=subprocess.PIPE)
+            except OSError, message:
+                self.warning(message)
         self.ReportServiceStatus(win32service.SERVICE_STOP_PENDING)
         self.logmsg(servicemanager.PYS_SERVICE_STOPPED)
 
