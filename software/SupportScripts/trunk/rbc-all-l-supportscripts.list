@@ -4,7 +4,7 @@
 %license COPYING
 %readme README
 %description Provides support scripts for a variety of basic functions, including CGI scripts for system configuration.
-%version 0.2.5
+%version 0.2.6
 %release 1
 
 %requires lighttpd
