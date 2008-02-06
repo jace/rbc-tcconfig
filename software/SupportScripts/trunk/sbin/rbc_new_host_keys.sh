@@ -20,7 +20,7 @@ rm -f ~tcconfig/.ssh/id_dsa ~tcconfig/.ssh/id_dsa.pub
 # XXX: The -r parameter to sed only works in GNU sed. BSD sed requires -E.
 # We don't bother with the difference since we're only targetting Linux.
 echo -n "Determining host id... "
-echo $(/sbin/ifconfig -a | grep -E '(ether|HWaddr|lladdr)' | sed -re 's/.*(ether|lladdr|HWaddr)( |\t)*([0-9a-fA-F:-]+).*/\3/; s/://g' | head -n1)-$(cat /etc/hostname|sed -e 's/-//g') > /etc/hostid
+echo $(/sbin/ifconfig -a | grep -E '(ether|HWaddr|lladdr)' | sed -re 's/.*(ether|lladdr|HWaddr)( |\t)*([0-9a-fA-F:-]+).*/\3/; s/://g' | head -n1)-$(cat /etc/hostname | sed -e 's/-//g') > /etc/hostid
 chmod 644 /etc/hostid
 cat /etc/hostid
 
