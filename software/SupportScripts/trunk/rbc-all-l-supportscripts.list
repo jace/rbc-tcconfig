@@ -4,7 +4,7 @@
 %license COPYING
 %readme README
 %description Provides support scripts for a variety of basic functions, including CGI scripts for system configuration.
-%version 0.2.6
+%version 0.2.7
 %release 1
 
 %requires lighttpd
@@ -49,3 +49,4 @@ f 0550 root root /usr/sbin/rbc_grub_password sbin/rbc_grub_password.py
 f 0755 root root /usr/sbin/rbc_share_xauthority sbin/rbc_share_xauthority.sh
 f 0755 root root /usr/sbin/rbc_conf_install sbin/rbc_conf_install.py
 f 0755 root root /usr/sbin/rbc_ipconfig_virtuals sbin/rbc_ipconfig_virtuals.sh
+f 0755 root root /usr/sbin/rbc_access_profile sbin/rbc_access_profile.sh
