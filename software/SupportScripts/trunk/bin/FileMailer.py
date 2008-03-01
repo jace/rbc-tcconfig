@@ -84,7 +84,7 @@ def main(argv):
         return -1
 
     # Do something here
-    default_text = "FileMailer with arguments: %s\r\n" % " ".join(argv)
+    default_text = "FileMailer with arguments: %s\r\n" % " ".join([repr(arg) for arg in argv])
     if not options.nobody:
         user_text = sys.stdin.read()
     else:
