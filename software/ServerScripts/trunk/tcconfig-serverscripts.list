@@ -1,0 +1,11 @@
+%product tcconfig-serverscripts
+%copyright Copyright (C) 2008, Comat Technologies Pvt Ltd
+%vendor Comat
+%license COPYING
+%readme README
+%description Server side scripts for the TCConfig framework.
+%version 0.1
+%release 1
+
+%system all
+f 0555 root root /usr/sbin/rbc_hostadd rbc_hostadd.sh
