@@ -30,10 +30,14 @@ def _offset_decode(timezone):
     300
     >>> _offset_decode('05:30')
     330
+    >>> _offset_decode('5.5')
+    330
     """
     if timezone.find(':') != -1:
         hours, minutes = [int(x) for x in timezone.split(':')]
         return hours*60 + minutes
+    elif timezone.find('.') != -1:
+        return int(float(timezone)*60)
     elif len(timezone) <= 2:
         return int(timezone)*60 # Just hours
     elif len(timezone) <= 4:
@@ -59,6 +63,12 @@ def tzdecode(timezone):
     <UTC>
     >>> tzdecode('Asia/Calcutta').zone
     'Asia/Calcutta'
+    >>> tzdecode('GMT+0530')
+    pytz.FixedOffset(330)
+    >>> tzdecode('UTC-5')
+    pytz.FixedOffset(-300)
+    >>> tzdecode('GMT+5.5')
+    pytz.FixedOffset(330)
     """
     timezone = str(timezone)
     if not timezone:

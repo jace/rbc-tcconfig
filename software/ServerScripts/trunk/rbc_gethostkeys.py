@@ -142,7 +142,7 @@ def run(host, username, password, port=110, arcpath='',
         dryrun=False, auto=False):
     """
     Polls mail server for new mail and parses received host keys.
-    If testrun is true, messages are not deleted from the server and no local
+    If dryrun is true, messages are not deleted from the server and no local
     machine accounts are created.
     """
     # Login to POP3 server
