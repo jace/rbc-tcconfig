@@ -107,7 +107,7 @@ class SSHKeyParser:
     __del__ = close
 
 
-def promptyesno(prompt, default=None):
+def promptyesno(prompt, default=None, auto=False):
     """
     Prompt the user with yes/no question. Returns True or False. The default
     answer may be one of Yes (True), No (False) or None.
@@ -115,12 +115,15 @@ def promptyesno(prompt, default=None):
     if default not in [True, False, None]:
         raise ValueError, "Invalid default answer %s." % default
 
+    if auto:
+        return default
+
     if default is None:
-        prompt = prompt + ' (y/n):'
+        prompt = prompt + ' (y/n): '
     elif default:
-        prompt = prompt + ' (Y/n):'
+        prompt = prompt + ' (Y/n): '
     else:
-        prompt = prompt + ' (y/N):'
+        prompt = prompt + ' (y/N): '
 
     answer = None
     while answer is None:
@@ -135,7 +138,8 @@ def promptyesno(prompt, default=None):
             answer = None
     return answer
 
-def run(host, username, password, port=110, arcpath='', dryrun=False, auto=False):
+def run(host, username, password, port=110, arcpath='',
+        dryrun=False, auto=False):
     """
     Polls mail server for new mail and parses received host keys.
     If testrun is true, messages are not deleted from the server and no local
@@ -155,17 +159,14 @@ def run(host, username, password, port=110, arcpath='', dryrun=False, auto=False
         if fileob.Subject.startswith('SSH '):
             print fileob.Subject
             fileob.parse()
-            print "Files:", repr(fileob.files.keys())
+            print "Files:", ', '.join(fileob.files.keys())
             keys = SSHKeyParser(fileob)
             if arcpath:
                 print "Archiving retrieved keys...",
                 print keys.archive(arcpath)
             # TODO: Prompt user here on what to do with message.
-            if auto:
-                deploy = True
-            else:
-                deploy = promptyesno("Deploy keys for host id %s?" %
-                                     keys.hostid, True)
+            deploy = promptyesno("Deploy keys for host id %s?" %
+                                 keys.hostid, True, auto)
             if deploy:
                 if dryrun:
                     print "Dry run, skipping deployment."
@@ -174,21 +175,17 @@ def run(host, username, password, port=110, arcpath='', dryrun=False, auto=False
                     if status != 0:
                         print "Deployment failed, leaving message on server."
                     else:
-                        pop.dele(i)
+                        delete = promptyesno("Deployment successful, delete from server?", True, auto)
+                        if delete:
+                            pop.dele(i)
             keys.close()
         else:
             # Message looks like junk.
-            if not auto:
-                delete = promptyesno("Message looks like junk. Delete?", True)
+            delete = promptyesno("Message looks like junk. Delete?",
+                                 True, auto)
+            if delete:
                 if dryrun:
-                    print "Dry run, ignoring input and leaving message on server."
-                else:
-                    if delete:
-                        pop.dele(i)
-            else:
-                # Automatic mode. Delete if not dry run.
-                if dryrun:
-                    print "Dry run, leaving junk message on server."
+                    print "Dry run, leaving message on server."
                 else:
                     pop.dele(i)
     # Clean up
