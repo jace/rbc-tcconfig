@@ -63,7 +63,8 @@ def tzdecode(timezone):
     timezone = str(timezone)
     if not timezone:
         return None
-    if timezone.startswith('GMT') or timezone.startswith('UTC'):
+    if (timezone.startswith('GMT') or timezone.startswith('UTC')) and (
+                  len(timezone) > 4) and (timezone[3] in ['+', '-']):
         timezone = timezone[3:]
     if timezone.startswith('+') or timezone.startswith('-'):
         # Looks like a time offset. Decode
@@ -88,6 +89,12 @@ def tzdecode(timezone):
             return None
 
 def now(timezone):
+    """
+    >>> type(now('0530'))
+    <type 'datetime.datetime'>
+    >>> now('0530').tzinfo._minutes
+    330
+    """
     return datetime.now(tz=tzdecode(timezone))
 
 if __name__=='__main__':
