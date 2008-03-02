@@ -11,6 +11,7 @@ import getpass
 import poplib, email
 import mimetypes
 import warnings
+from datetime import datetime
 from optparse import OptionParser
 
 try: # Since readline may not be available.
@@ -30,6 +31,7 @@ class EmailFiles:
         self.To = message.get('To', '')
         self.Cc = message.get('Cc', '')
         self.Date = message.get('Date', '')
+        self.MsgId = message.get('Message-Id', '')
         self.message = message
 
         # Don't do these until parse() is called. Speeds up filtering.
@@ -49,8 +51,8 @@ class EmailFiles:
 
 class SSHKeyParser:
     """
-    Class to process SSH keys received via email. Requires an EmailFiles object
-    as parameter.
+    Class to process SSH keys received via email. Requires an EmailFiles
+    object as parameter.
     """
     def __init__(self, efiles):
         self.efiles = efiles
@@ -63,15 +65,44 @@ class SSHKeyParser:
             fp.close()
         self.dir = unpackdir
 
+    def _sanitiseMsgId(self, msgid):
+        """
+        Strip a given message id of filesystem unfriendly characters.
+        Not particularly smart, given how this could be exploited for a
+        denial of service attack."""
+        return msgid.replace('<', '').replace('>', '').replace('/../', '')
+
+    def archive(self, arcpath):
+        """Archive SSH keys"""
+        # Create a unique subfolder under arcpath and store there
+        # The unique name creation process is not 100% secure, but close
+        uniqfolder = "_".join((datetime.now().strftime(
+                                                  '%Y%m%d%H%M%S'),
+                              self._sanitiseMsgId(self.efiles.MsgId),
+                              self.hostid))
+        ufpath = os.path.join(arcpath, uniqfolder)
+        os.mkdir(ufpath)
+        for filename, filebody in self.efiles.files.items():
+            fp = open(os.path.join(ufpath, filename), 'wb')
+            fp.write(filebody)
+            fp.close()
+        fp = open(os.path.join(ufpath, 'msgbody.eml'), 'wb')
+        fp.write(str(self.efiles.message))
+        fp.close()
+        return ufpath
+
     def deploy(self):
         """Deploy SSH keys"""
         return os.system('rbc_hostadd "%s" "%s"' % (self.hostid, self.dir))
 
     def close(self):
         """Clean up"""
-        for keyfile in self.efiles.files:
-            os.remove(os.path.join(self.dir, keyfile))
-        os.rmdir(self.dir)
+        if os.access(self.dir, os.F_OK):
+            for keyfile in self.efiles.files:
+                fpath = os.path.join(self.dir, keyfile)
+                if os.access(fpath, os.F_OK):
+                    os.remove(fpath)
+            os.rmdir(self.dir)
 
     __del__ = close
 
@@ -104,34 +135,37 @@ def promptyesno(prompt, default=None):
             answer = None
     return answer
 
-def run(host, username, password, dryrun=False, auto=False):
+def run(host, username, password, port=110, arcpath='', dryrun=False, auto=False):
     """
     Polls mail server for new mail and parses received host keys.
     If testrun is true, messages are not deleted from the server and no local
     machine accounts are created.
     """
     # Login to POP3 server
-    pop = poplib.POP3(host)
+    pop = poplib.POP3(host, port)
     pop.user(username)
     pop.pass_(password)
     # Check for mail
     message_count = len(pop.list()[1])
     print "Processing %d message(s)..." % message_count
-    for i in range(1, message_count+1):
+    for i in range(1, message_count+1): # POP3 starts counting from 1, not 0.
         print "Message %d of %d..." % (i, message_count)
-        msg_body = '\r\n'.join(pop.retr(i)[1])
+        msg_body = '\r\n'.join(pop.retr(i)[1]) # \r\n as per RFC 822.
         fileob = EmailFiles(msg_body)
         if fileob.Subject.startswith('SSH '):
             print fileob.Subject
             fileob.parse()
             print "Files:", repr(fileob.files.keys())
             keys = SSHKeyParser(fileob)
+            if arcpath:
+                print "Archiving retrieved keys...",
+                print keys.archive(arcpath)
             # TODO: Prompt user here on what to do with message.
             if auto:
                 deploy = True
             else:
-                deploy = promptyesno("Deploy keys for host id %s?" % keys.hostid,
-                                     True)
+                deploy = promptyesno("Deploy keys for host id %s?" %
+                                     keys.hostid, True)
             if deploy:
                 if dryrun:
                     print "Dry run, skipping deployment."
@@ -140,9 +174,8 @@ def run(host, username, password, dryrun=False, auto=False):
                     if status != 0:
                         print "Deployment failed, leaving message on server."
                     else:
-                        # TODO, FIXME: Never ever delete without saving!
-                        # Let's just put this stuff in a temp folder somewhere
                         pop.dele(i)
+            keys.close()
         else:
             # Message looks like junk.
             if not auto:
@@ -172,14 +205,21 @@ def main(argv):
     parser = OptionParser(usage=main.__doc__)
     parser.add_option('-H', '--host', type="string", default="",
                       help="Mail server hostname")
+    parser.add_option('-p', '--port', type="int", default=110,
+                      help="Mail server POP3 port [%default]")
     parser.add_option('-U', '--username', type="string", default="",
                      help="Mail server login username")
-    parser.add_option('-p', '--password', type="string", default="",
+    parser.add_option('-P', '--password', type="string", default="",
                       help="Mail server login password (prompted if blank)")
+    parser.add_option('-F', '--arcpath', type="string",
+                      default="/var/rbc/hostkeys",
+                      help="Archive path for host keys [%default], "\
+                      "provide blank value to supress archival")
     parser.add_option('-a', '--auto', action="store_true", default=False,
                        help="Automatic mode, no user prompts")
     parser.add_option('-d', '--dryrun', action="store_true", default=False,
-                      help="Dry run, do not delete messages or create accounts")
+                      help="Dry run, do not delete messages or create "\
+                      "accounts, but do archive retrieved host keys")
     (options, args) = parser.parse_args(argv[1:])
 
     if options.host != '' and options.username != '':
@@ -189,6 +229,7 @@ def main(argv):
         print >> sys.stderr, "Usage: %s options. Use -h for details" % argv[0]
         return 1
     run(host=options.host, username=options.username, password=options.password,
+        port=options.port, arcpath=options.arcpath,
         dryrun=options.dryrun, auto=options.auto)
 
 
