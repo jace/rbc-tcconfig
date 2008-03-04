@@ -41,6 +41,7 @@ f 0444 root root /var/www/config/index.html html/index.html
 f 0444 root root /var/www/styles.css html/styles.css
 f 0444 root root /usr/lib/python2.5/site-packages/netiface.py lib/netiface.py
 f 0755 root root /usr/sbin/rbc_new_host_keys sbin/rbc_new_host_keys.sh
+f 0755 root root /usr/sbin/rbc_host_keys_mailer sbin/rbc_host_keys_mailer.sh
 f 0755 root root /usr/sbin/rbc_iface_patch sbin/rbc_iface_patch.py
 f 0550 root www-data /usr/sbin/rbc_ipconfig_reconfigure sbin/rbc_ipconfig_reconfigure.py
 f 0550 root www-data /usr/sbin/rbc_printers_reconfigure sbin/rbc_printers_reconfigure
