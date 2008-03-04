@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # rbc_access_profile.sh: script to enable user specific acl(s) in the
 # scquid.conf and inform the running squid about it.
@@ -6,7 +6,7 @@
 # Run this script with the same user privileges as that of the Squid process.
 #
 
-VERSION="0.1"
+VERSION="0.2"
 PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:$PATH"
 
 # to suppress the getopts error messages
@@ -76,7 +76,7 @@ check_options ()
             ;;
 
             *)
-            printf "$0: invalid option: \`-%s', try \`$0 -h'\n" $OPTARG;
+            printf "$0: invalid option: \`-%s'; Try \`$0 -h'\n" $OPTARG;
             exit 0;
         esac
     done
@@ -97,11 +97,11 @@ check_options ()
     conff="$confd/squid.conf"
     proff="$confd/profiles/$1.conf"
     conft="$confd/squid.conf.template"
-    if [ ! -f $proff ]; then
+    if [ ! -r $proff ]; then
         printf "$0: could not access file \`%s'\n" $proff;
-        exit 0;
+        proff="$confd/profiles/fallback.conf";
     fi
-    if [ ! -f $conft ]; then
+    if [ ! -r $conft ]; then
         printf "$0: could not access file \`%s'\n" $conft;
         exit 0;
     fi
@@ -109,14 +109,14 @@ check_options ()
         printf "$0: seems like Squid is not listening on port 3128\n";
         exit 0;
     fi
-    printf "$0: using squid(pid: %d) config: \`%s'\n" $SQDPID "$conff";
+    printf "$0: using Squid(pid: %d) config: \`%s'\n" $SQDPID "$conff";
     printf "$0: including acls from \`%s'\n" $proff;
 
     # do the actual include operation
     sed -e "s:^#include.*profile:cat < $proff:e" $conft > $conff;
 
-    # Tell squid to re-read the configuration file.
-    printf "$0: signaling squid \`$SQDPID'\n";
+    # Tell Squid to re-read the configuration file.
+    printf "$0: signaling Squid \`$SQDPID'\n";
     kill -$SIGHUP $SQDPID;
 
     exit 0;
