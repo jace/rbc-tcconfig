@@ -38,7 +38,7 @@ printh ()
     usage;
     printf "\n %s\n" "Options:";
     printf "$fmt" "   -d <dir-name>" \
-                  "specify squid config directory [default: /etc/squid]";
+                  "specify squid config directory [default: $confd]";
     printf "$fmt" "   -h" "display this help";
     printf "$fmt" "   -p <pid>" "spcify squid process-id";
     printf "$fmt" "   -v" "display version information";
