@@ -4,8 +4,8 @@
 %license COPYING
 %readme README
 %description Server side scripts for the TCConfig framework.
-%version 0.1
-%release 2
+%version 0.2
+%release 1
 
 %system all
 f 0555 root root /usr/sbin/rbc_hostadd rbc_hostadd.sh
