@@ -11,3 +11,4 @@
 f 0555 root root /usr/sbin/rbc_hostadd rbc_hostadd.sh
 f 0555 root root /usr/sbin/rbc_gethostkeys.py rbc_gethostkeys.py
 f 0444 root root /usr/lib/python2.5/site-packages/tzdecode.py lib/tzdecode.py
+f 0444 root root /usr/lib/python2.4/site-packages/tzdecode.py lib/tzdecode.py
