@@ -1,12 +1,18 @@
 #!/bin/bash
 #
 # rbc_set_access_profile.sh: script to enable user specific acl(s) in the
-# scquid.conf and inform the running squid about it.
+# scquid.conf and inform the running Squid about it.
+#
+# rbc_set_access_profile.sh looks for the line of the form `##include profile'
+# in the `squid.conf.template' file and replaces it with the actual user
+# profile. While the template file is located under the squid config directory;
+# The user profile file must be located under `profiles' directory under the
+# squid config directory[default: /etc/squid].
 #
 # Run this script with the same user privileges as that of the Squid process.
 #
 
-VERSION="0.2"
+VERSION="0.3"
 PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:$PATH"
 
 # to suppress the getopts error messages
@@ -27,11 +33,12 @@ usage ()
 
 printh ()
 {
-    fmt="%-20s %s\n";
+    fmt="%-18s %s\n";
 
     usage;
     printf "\n %s\n" "Options:";
-    printf "$fmt" "   -d <dir-name>" "specify squid config directory";
+    printf "$fmt" "   -d <dir-name>" \
+                  "specify squid config directory [default: /etc/squid]";
     printf "$fmt" "   -h" "display this help";
     printf "$fmt" "   -p <pid>" "spcify squid process-id";
     printf "$fmt" "   -v" "display version information";
