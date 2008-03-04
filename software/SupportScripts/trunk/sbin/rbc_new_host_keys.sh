@@ -38,7 +38,4 @@ su - tcconfig -c "cd ~/.ssh; ssh-keygen -q -f id_rsa -t rsa -N ''; ssh-keygen -q
 # Set a flag so this script isn't called again
 touch /etc/ssh/.rbchostkey
 
-MAILDOMAIN="rbc.comat.com"
-if [ -f /etc/default/maildomain ]; then
-    . /etc/default/maildomain
-fi
+/usr/sbin/rbc_host_keys_mailer
