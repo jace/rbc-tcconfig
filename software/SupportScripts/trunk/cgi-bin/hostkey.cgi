@@ -39,13 +39,28 @@ if form.has_key('submit'):
             print cgi.escape(line)
         sys.stdout.flush()
     print "</pre>"
+if form.has_key('remail'):
+    # Confirm that remailing the host keys.
+    print  """<h1>Remailing the host kets...</h1>"""
+    print "<pre>"
+    sys.stdout.flush()
+    process = subprocess.Popen(["sudo", "/usr/bin/rbc_new_host_keys"], env=os.environ,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    while process.poll() is None:
+        for line in process.stdout.readlines():
+            print cgi.escape(line)
+        for line in process.stderr.readlines():
+            print cgi.escape(line)
+        sys.stdout.flush()
+    print "<pre>"
 else:
     # Display submit button
     print '<form action="" method="post">'
     if keyGenAllowed():
         print '<input type="submit" name="submit" value="Regenerate Host Keys" />'
     else:
-        print "<p>This computer's host keys have already been generated.</p>"
+        print "<p>This computer's host keys have already been generated. Just remail them.</p>"
+	print '<input type="submit" name="remail" value="Mail again the Host Keys" />'
     print '</form>'
 
 print """</body></html>"""
