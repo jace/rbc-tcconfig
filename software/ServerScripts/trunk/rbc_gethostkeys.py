@@ -93,7 +93,8 @@ class SSHKeyParser:
 
     def deploy(self):
         """Deploy SSH keys"""
-        return os.system('rbc_hostadd "%s" "%s"' % (self.hostid, self.dir))
+        command = 'rbc_hostadd "%s" %s' % (self.hostid, " ".join(['"%s"' % f for f in self.efiles.files.keys()]))
+        return os.system(command)
 
     def close(self):
         """Clean up"""
