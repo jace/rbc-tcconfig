@@ -113,7 +113,7 @@ check_options ()
     printf "$0: including acls from \`%s'\n" $proff;
 
     # do the actual include operation
-    sed -e "s:^#include.*profile:cat < $proff:e" $conft > $conff;
+    sed -e "s:^##include.*profile:cat < $proff:e" $conft > $conff;
 
     # Tell Squid to re-read the configuration file.
     printf "$0: signaling Squid \`$SQDPID'\n";
