@@ -5,7 +5,7 @@
 %readme README
 %description Provides support scripts for a variety of basic functions, including CGI scripts for system configuration.
 %version 0.2.7
-%release 1
+%release 2
 
 %requires lighttpd
 %requires python2.5
@@ -29,14 +29,14 @@ EOF
 %system all
 f 0555 root root /usr/bin/filemailer bin/FileMailer.py
 f 0555 root root /usr/bin/logmailer bin/logmailer.sh
-f 0555 root root /usr/lib/cgi-bin/ipconfig.cgi cgi-bin/ipconfig.cgi 
+f 0555 root root /usr/lib/cgi-bin/ipconfig.cgi cgi-bin/ipconfig.cgi
 f 0555 root root /usr/lib/cgi-bin/printer.cgi cgi-bin/printer.cgi
 f 0555 root root /usr/lib/cgi-bin/dialer.cgi cgi-bin/dialer.cgi
 f 0555 root root /usr/lib/cgi-bin/pingtest.cgi cgi-bin/pingtest.cgi
 f 0555 root root /usr/lib/cgi-bin/upgrade.cgi cgi-bin/upgrade.cgi
 f 0555 root root /usr/lib/cgi-bin/hostkey.cgi cgi-bin/hostkey.cgi
 d 0555 root root /var/www/config -
-f 0444 root root /var/www/config/index.html html/index.html 
+f 0444 root root /var/www/config/index.html html/index.html
 f 0444 root root /var/www/styles.css html/styles.css
 f 0444 root root /usr/lib/python2.5/site-packages/netiface.py lib/netiface.py
 f 0755 root root /usr/sbin/rbc_new_host_keys sbin/rbc_new_host_keys.sh
