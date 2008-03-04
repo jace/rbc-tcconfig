@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# rbc_access_profile.sh: script to enable user specific acl(s) in the
+# rbc_set_access_profile.sh: script to enable user specific acl(s) in the
 # scquid.conf and inform the running squid about it.
 #
 # Run this script with the same user privileges as that of the Squid process.
