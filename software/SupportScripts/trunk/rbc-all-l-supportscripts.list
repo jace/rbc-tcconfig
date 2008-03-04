@@ -24,7 +24,6 @@ chown root:www-data /usr/sbin/rbc_printers_reconfigure
 chmod 550 /usr/sbin/rbc_printers_reconfigure
 chmod u+s /usr/sbin/rbc_printers_reconfigure
 chmod u+s /usr/sbin/rbc_dialer
-
 EOF
 
 %system all
