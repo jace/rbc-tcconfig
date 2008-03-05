@@ -39,7 +39,7 @@ if form.has_key('submit'):
             print cgi.escape(line)
         sys.stdout.flush()
     print "</pre>"
-if form.has_key('remail'):
+elif form.has_key('remail'):
     # Confirm that remailing the host keys.
     print  """<h1>Remailing the host kets...</h1>"""
     print "<pre>"
