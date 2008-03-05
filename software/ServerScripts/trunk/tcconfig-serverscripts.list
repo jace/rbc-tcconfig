@@ -5,10 +5,12 @@
 %readme README
 %description Server side scripts for the TCConfig framework.
 %version 0.2
-%release 1
+%release 2
 
 %system all
 f 0555 root root /usr/sbin/rbc_hostadd rbc_hostadd.sh
-f 0555 root root /usr/sbin/rbc_gethostkeys.py rbc_gethostkeys.py
+f 0555 root root /usr/sbin/rbc_gethostkeys rbc_gethostkeys.py
 f 0444 root root /usr/lib/python2.5/site-packages/tzdecode.py lib/tzdecode.py
 f 0444 root root /usr/lib/python2.4/site-packages/tzdecode.py lib/tzdecode.py
+d 0755 root root /var/rbc -
+d 0755 root root /var/rbc/hostkeys -
