@@ -22,12 +22,12 @@ except ImportError:
 class FileMailer:
     """FileMailer sends binary files over email as Base64-encoded attachments."""
 
-    def __init__(self, recipients, subject="", text=""):
+    def __init__(self, recipients, subject="", text="", msgfrom=None):
         self.smtpserver = None
         self.recipients = recipients
         self.subject = subject
         self.text = text
-        self.msgfrom = self.__getFrom()
+        self.msgfrom = msgfrom or self.__getFrom()
         self.msg = MIMEMultipart()
         self.msg['From'] = self.msgfrom
         self.msg['To'] = ", ".join(recipients)
@@ -61,6 +61,12 @@ class FileMailer:
         part.add_header('Content-Disposition', 'attachment; filename="%s"' % os.path.basename(filename))
         self.msg.attach(part)
 
+    def attachtext(self, filename, text):
+        zipped = StringIO()
+        zipped.write(bz2.compress(text))
+        zipped.seek(0)
+        self.attach(filename + '.bz2', zipped)
+
     def attachzipped(self, filename, filedata):
         if not hasattr(filedata, 'read'):
             filedata = open(filedata, 'rb').read()
@@ -84,6 +90,9 @@ def main(argv):
                       help="Attach file")
     parser.add_option('-Z', '--zipattach', action="store_true", default=False,
                       help="Compress all attachments [default %default]")
+    parser.add_option('-f', '--from', dest="msgfrom", type="string",
+                      default="",
+                      help="From address [default is to guess]")
     parser.add_option('-r', '--relayhost', type="string", default="localhost",
                       help="Mail relay host [default %default]")
     parser.add_option('-p', '--port', type="int", default=25,
@@ -105,9 +114,9 @@ def main(argv):
     else:
         body_text = user_text
 
-    filemailer = FileMailer(recipients, options.subject, body_text)
+    filemailer = FileMailer(recipients, options.subject, body_text, options.msgfrom)
     if options.zip and user_text != '':
-        filemailer.attachzipped("stdin.txt", user_text)
+        filemailer.attachtext("stdin.txt", user_text)
     if options.files != None:
         for attachment in options.files:
             if options.zipattach:
