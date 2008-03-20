@@ -4,7 +4,7 @@
 %license COPYING
 %readme README
 %description Provides support scripts for a variety of basic functions, including CGI scripts for system configuration.
-%version 0.2.9
+%version 0.2.10
 %release 1
 
 %requires lighttpd
@@ -29,6 +29,7 @@ EOF
 %system all
 f 0555 root root /usr/bin/filemailer bin/FileMailer.py
 f 0555 root root /usr/bin/logmailer bin/logmailer.sh
+f 0555 root root /usr/bin/randsleep bin/randsleep.sh
 f 0555 root root /usr/lib/cgi-bin/ipconfig.cgi cgi-bin/ipconfig.cgi
 f 0555 root root /usr/lib/cgi-bin/printer.cgi cgi-bin/printer.cgi
 f 0555 root root /usr/lib/cgi-bin/dialer.cgi cgi-bin/dialer.cgi
