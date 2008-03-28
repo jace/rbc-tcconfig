@@ -5,13 +5,6 @@ import os
 import sys
 import subprocess
 
-#def keyGenAllowed():
-#    """Returns True if this machine needs host key regeneration."""
-#    if os.path.exists("/etc/ssh/.rbchostkey"):
-#        return False
-#    else:
-#        return True
-
 print "Content-Type: text/html"
 print # End of headers
 print """
@@ -26,7 +19,6 @@ print """
 
 form = cgi.FieldStorage()
 if form.has_key('submit'):
-    # Confirm that the flag is not set and re-generate host keys.
     print """<h1>Regenerating hostpassword...</h1>"""
     print "<pre>"
     sys.stdout.flush()
@@ -39,28 +31,13 @@ if form.has_key('submit'):
             print cgi.escape(line)
         sys.stdout.flush()
     print "</pre>"
-#elif form.has_key('remail'):
-#    # Confirm that remailing the host keys.
-#    print  """<h1>Remailing the host kets...</h1>"""
-#    print "<pre>"
-#    sys.stdout.flush()
-#    process = subprocess.Popen(["sudo", "/usr/sbin/rbc_host_keys_mailer"], env=os.environ,
-#            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#    while process.poll() is None:
-#        for line in process.stdout.readlines():
-#            print cgi.escape(line)
-#        for line in process.stderr.readlines():
-#            print cgi.escape(line)
-#        sys.stdout.flush()
-#    print "<pre>"
+    print "<p>Done.</p>"
 else:
     # Display submit button
+    print "<p>After your host keys have been submitted and validated on the server, your computer needs to retrieve a password for itself. This is required for the computer to authorise user logins with the server.</p>"
+    print "<p>Password retrieval is done automatically once a week, but you may also ask for it to be retrieved again now.</p>"
     print '<form action="" method="post">'
-    #if keyGenAllowed():
-    print '<input type="submit" name="submit" value="Retrive new HostPassword" />'
-    #else:
-    #    print "<p>This computer's host keys have already been generated.</p>"
-    #    print '<input type="submit" name="remail" value="Upload Keys Again" />'
+    print '<input type="submit" name="submit" value="Retrieve New Host Password" />'
     print '</form>'
 
 print """</body></html>"""
