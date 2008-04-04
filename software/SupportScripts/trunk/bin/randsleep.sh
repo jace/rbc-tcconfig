@@ -15,3 +15,4 @@ done
 
 randsec=$(($randsec % $limit))
 sleep ${randsec}s
+exit 0
