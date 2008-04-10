@@ -125,7 +125,22 @@ def oldmain(itype, ipaddr, netmask, gateway, hostname, *nameservers):
     os.system('/usr/sbin/rbc_ipconfig_virtuals &> /dev/null')
     os.system('/etc/init.d/postfix restart > /dev/null')
 
-def updateInterfaces(iftype, address, netmask, gateway, interfaces):
+def updateInterfaces(iftype, address, netmask, gateway, interfaces, ifdir):
+    iface = 'eth0'
+    if ifdir:
+        out = open(os.path.join(ifdir, iface), 'w')
+        out.write('auto ' + iface + '\n')
+        out.write('iface ' + iface + ' inet ' + iftype + '\n')
+        if address is not None:
+            out.write('\taddress ' + address + '\n')
+        if netmask is not None:
+            out.write('\tnetmask ' + netmask + '\n')
+        if gateway is not None:
+            out.write('\gateway ' + gateway + '\n')
+        out.close()
+        parameters = ['/usr/sbin/rbc_ifd_rebuild', interfaces, ifdir]
+        os.spawnv(os.P_WAIT, parameters[0], parameters)
+    else: 
         parameters = ['/usr/sbin/rbc_iface_patch']
         parameters.extend(['-f', interfaces])
         parameters.extend(['-t', iftype])
@@ -135,7 +150,7 @@ def updateInterfaces(iftype, address, netmask, gateway, interfaces):
             parameters.extend(['-n', netmask])
         if gateway is not None:
             parameters.extend(['-g', gateway])
-        parameters.append('eth0')
+        parameters.append(iface)
     	os.spawnv(os.P_WAIT, '/usr/sbin/rbc_iface_patch' , parameters)
 
 def main(argv):
@@ -162,6 +177,8 @@ def main(argv):
         default=None, help="Do not display texts")
     parser.add_option('--interfaces',
         default='/etc/network/interfaces', help="The interfaces filename [default is /etc/network/interfaces]")
+    parser.add_option('--ifd', default='',
+        help="Use interfaces.d folder instead of flat file [recommended: /etc/network/interfaces.d]")
     parser.add_option('--postfixcf',
         default='/etc/popstfix/main.cf', help="The postfix configuration file [default is /etc/postfix/main.cf]")
     parser.add_option('-p', '--postfix', action="store_true",
@@ -187,7 +204,7 @@ def main(argv):
         return 0
 
     if options.iftype is not None:
-        updateInterfaces( options.iftype, options.address, options.netmask, options.gateway, options.interfaces)
+        updateInterfaces(options.iftype, options.address, options.netmask, options.gateway, options.interfaces, options.ifd)
 
     if options.nameservers is not None:
         updateResolvConf(options.nameservers, options.resolvconf)

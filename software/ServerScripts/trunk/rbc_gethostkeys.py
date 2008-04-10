@@ -222,7 +222,8 @@ def main(argv):
 
     if options.host != '' and options.username != '':
         if options.password == '':
-            options.password = getpass.getpass()
+            options.password = getpass.getpass(
+                                    "%s's Password:" % options.username)
     else:
         print >> sys.stderr, "Usage: %s options. Use -h for details" % argv[0]
         return 1
