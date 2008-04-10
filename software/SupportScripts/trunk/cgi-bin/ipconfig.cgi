@@ -34,7 +34,7 @@ if form.has_key('submit'):
     # Step 3: Update hostname in /etc/hostname and /etc/hosts
     # Step 4: Restart networking.
     # XXX Alert! Potential severe security hole here. Parameters must be validated first.
-    parameters = ['/usr/bin/sudo', '/usr/sbin/rbc_ipconfig_reconfigure', '--restart', '--iftype', form['iftype'].value, '--address', form['ipaddr'].value, '--netmask', form['netmask'].value, '--gateway', form['gateway'].value, '--hostname', form['hostname'].value]
+    parameters = ['/usr/bin/sudo', '/usr/sbin/rbc_ipconfig_reconfigure', '--restart', '--iftype', form['iftype'].value, '--address', form['ipaddr'].value, '--netmask', form['netmask'].value, '--gateway', form['gateway'].value, '--hostname', form['hostname'].value, '--ifd', '/etc/network/interfaces.d']
     for nameserver in form['nameservers'].value.replace('\r', '').split('\n'):
         parameters.extend(['-d', nameserver])
     #reconfig_command = "sudo /usr/sbin/rbc_ipconfig_reconfigure --iftype '%s' -a '%s' -n '%s' -g '%s' --hostname '%s' %s" \
