@@ -136,7 +136,7 @@ def updateInterfaces(iftype, address, netmask, gateway, interfaces, ifdir):
         if netmask is not None:
             out.write('\tnetmask ' + netmask + '\n')
         if gateway is not None:
-            out.write('\gateway ' + gateway + '\n')
+            out.write('\tgateway ' + gateway + '\n')
         out.close()
         parameters = ['/usr/sbin/rbc_ifd_rebuild', interfaces, ifdir]
         os.spawnv(os.P_WAIT, parameters[0], parameters)
