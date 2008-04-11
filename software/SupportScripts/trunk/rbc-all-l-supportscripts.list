@@ -5,7 +5,7 @@
 %readme README
 %description Provides support scripts for a variety of basic functions, including CGI scripts for system configuration.
 %version 0.3
-%release 1
+%release 2
 
 %requires lighttpd
 %requires python2.5
@@ -52,3 +52,4 @@ f 0755 root root /usr/sbin/rbc_share_xauthority sbin/rbc_share_xauthority.sh
 f 0755 root root /usr/sbin/rbc_conf_install sbin/rbc_conf_install.py
 f 0755 root root /usr/sbin/rbc_ipconfig_virtuals sbin/rbc_ipconfig_virtuals.sh
 f 0755 root root /usr/sbin/rbc_set_access_profile sbin/rbc_set_access_profile.sh
+f 0755 root root /usr/sbin/rbc_ifd_rebuild sbin/rbc_ifd_rebuild.sh
