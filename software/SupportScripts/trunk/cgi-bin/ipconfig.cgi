@@ -71,12 +71,12 @@ else:
            iface.iftype == "dhcp" and 'checked="checked" /' or ' /',
            iface.iftype == "static" and 'checked="checked" /' or ' /')
     print """
-	<table id="static-details">
-	<tr><th>IP Address</th><td><input type="text" name="ipaddr" value="%s"></td></tr>
-	<tr><th>Netmask</th><td><input type="text" name="netmask" value="%s"></td></tr>
-	<tr><th>Gateway</th><td><input type="text" name="gateway" value="%s"></td></tr>
-    <tr><th>DNS Servers</th><td><textarea name="nameservers">%s</textarea></td></tr>
-	</table>
+        <table id="static-details">
+        <tr><th>IP Address</th><td><input type="text" name="ipaddr" value="%s"></td></tr>
+        <tr><th>Netmask</th><td><input type="text" name="netmask" value="%s"></td></tr>
+        <tr><th>Gateway</th><td><input type="text" name="gateway" value="%s"></td></tr>
+        <tr><th>DNS Servers</th><td><textarea name="nameservers">%s</textarea></td></tr>
+        </table>
     """ % (iface.ipaddr, iface.netmask, iface.gateway, '\r\n'.join(nameservers))
     print """<input type="Submit" name="submit" value="Update IP Configuration"></form></body></html>"""
 

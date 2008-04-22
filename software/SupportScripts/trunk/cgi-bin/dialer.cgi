@@ -17,22 +17,22 @@ form = cgi.FieldStorage()
 dial = 0
 done = None
 try:
-  dial = form['dial'].value
+    dial = form['dial'].value
 except KeyError:
-  dial = 0
+    dial = 0
 
 
 if dial == "1":
-  done = (0, 'Disconnect')
-  print html % done
-  os.system("cgidialer &")
+    done = (0, 'Disconnect')
+    print html % done
+    os.system("cgidialer &")
 elif dial == "0":
-  os.system('cgidialer stop')
-  done = (1, 'Connect')
-  print html % done
+    os.system('cgidialer stop')
+    done = (1, 'Connect')
+    print html % done
 else:
-  done = (1, 'Connect Now')
-  print html % done
+    done = (1, 'Connect Now')
+    print html % done
 #except:
-#  done = (1, 'Connect Now')
+#    done = (1, 'Connect Now')
 

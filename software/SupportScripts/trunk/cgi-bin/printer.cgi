@@ -67,7 +67,7 @@ elif form.has_key('refresh'):
         for printer in printerlist:
             if printer.search_str.search(line) != None:
                 printer.devices.append(line)
-   
+
     for printer in printerlist:
         print "<h2>%s</h2>" % printer.name
         print """<table><tr><th align="left">Select</th><th align="left">Device</th></tr>"""
