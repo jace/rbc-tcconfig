@@ -30,7 +30,16 @@ makelist () {
     if [[ "$LISTFILE" -nt "$DEBFILE" ]]; then
         echo Rebuilding $PRODUCT...
         find -name Makefile -execdir make -f '{}' \;
-        sudo epm -f deb "$PRODUCT"
+        # Decide on whether to package for specific architecture or for all
+        # Look for binary files
+        find -type f -execdir file '{}' \; | grep -E ':[ \t]*(ELF|Mach-O).*executable.*(386|x86-64)' > /dev/null
+        if [ $? -eq 0 ] ; then
+            # Found Package for architecture
+            sudo epm -f deb "$PRODUCT"
+        else
+            # Package for noarch (in Debian: "all")
+            sudo epm -f deb -a all "$PRODUCT"
+        fi
     fi
 }
 
