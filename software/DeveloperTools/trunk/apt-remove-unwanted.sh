@@ -19,5 +19,8 @@ bittorrent evince example-content laptop-detect laptop-mode-tools mono tangerine
 tango-icon-theme telnet dosfstools espeak app-install-data app-install-data-commercial capplets-data \
 cdrecord evolution-data-server-common genisoimage libebook1.2-9 libecal1.2-7 libcamel1.2-10 \
 libedata-book1.2-2 libedata-cal1.2-6 libedataserver1.2-9 libedataserverui1.2-8 libegroupwise1.2-13 \
-libexchange-storage1.2-3 xscreensaver-data xscreensaver-gl ttf-opensymbol apport apport-gtk python-apport \
-libbluetooth2 binfmt-support ubuntu-desktop
+libexchange-storage1.2-3 xscreensaver-data xscreensaver-gl ttf-opensymbol apport apport-gtk \
+python-apport libbluetooth2 binfmt-support ubuntu-desktop aptitude bc compiz gdebi gedit-common \
+gnome-about gnome-applets-data gnome-cards-data gnome-games-data gnome-mag gnome-panel-data \
+gucharmap scim scim-gtk2-immodule scim-modules-scoket scim-tables-additional synaptic wodim \
+update-manager update-manager-core ubuntu-artwork ubuntu-docs ubuntu-sounds
