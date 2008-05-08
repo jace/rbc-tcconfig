@@ -1,6 +1,6 @@
 #! /bin/sh
 
-apt-get remove --ignore-missing --auto-remove \
+apt-get remove --ignore-missing --auto-remove --purge \
 gnome-games f-spot gimp gimp-data gimp-python xsane libgimp2.0 gnome-utils gthumb \
 ekiga evolution gaim gaim-data gnome-app-install gnome-media gnome-orca gtkhtml3.14 \
 libeel2-2 libgail-common libgail-gnome-module libgail18 libgnome2.0-cil wireless-tools \
@@ -23,4 +23,4 @@ binfmt-support ubuntu-desktop aptitude bc compiz gdebi gedit-common gnome-about 
 gnome-applets-data gnome-cards-data gnome-games-data gnome-mag gnome-panel-data gucharmap \
 scim scim-gtk2-immodule scim-modules-socket scim-tables-additional synaptic update-manager \
 update-manager-core ubuntu-artwork ubuntu-docs ubuntu-sounds wpasupplicant network-manager \
-python-gnome2-extras openoffice.org-style-human
+python-gnome2-extras openoffice.org-style-human popularity-contest
