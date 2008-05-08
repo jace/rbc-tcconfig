@@ -23,4 +23,4 @@ binfmt-support ubuntu-desktop aptitude bc compiz gdebi gedit-common gnome-about 
 gnome-applets-data gnome-cards-data gnome-games-data gnome-mag gnome-panel-data gucharmap \
 scim scim-gtk2-immodule scim-modules-socket scim-tables-additional synaptic update-manager \
 update-manager-core ubuntu-artwork ubuntu-docs ubuntu-sounds wpasupplicant network-manager \
-python-gnome2-extras openoffice.org-style-human popularity-contest
+python-gnome2-extras openoffice.org-style-human popularity-contest nautilus-data
