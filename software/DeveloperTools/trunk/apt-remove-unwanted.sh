@@ -23,4 +23,9 @@ binfmt-support ubuntu-desktop aptitude bc compiz gdebi gedit-common gnome-about 
 gnome-applets-data gnome-cards-data gnome-games-data gnome-mag gnome-panel-data gucharmap \
 scim scim-gtk2-immodule scim-modules-socket scim-tables-additional synaptic update-manager \
 update-manager-core ubuntu-artwork ubuntu-docs ubuntu-sounds wpasupplicant network-manager \
-python-gnome2-extras openoffice.org-style-human popularity-contest nautilus-data
+python-gnome2-extras openoffice.org-style-human popularity-contest nautilus-data \
+brltty cdrdao command-not-found fortune-mod fortunes-min software-properties-gtk \
+ttf-arabeyes ttf-arphic-ukai ttf-arphic-uming ttf-baekmuk ttf-bengali-fonts vino \
+ttf-devanagari-fonts ttf-gujarati-fonts ttf-malayalam-fonts ttf-oriya-fonts yelp \
+ttf-punjabi-fonts ttf-tamil-fonts ttf-telugu-fonts ttf-kochi-gothic ttf-kochi-mincho \
+ttf-lao ttf-thai-tlwg vnc-common w3m at-spi tpshset
