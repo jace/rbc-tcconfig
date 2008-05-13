@@ -38,4 +38,4 @@ ttf-telugu-fonts ttf-kochi-gothic ttf-kochi-mincho ttf-lao ttf-thai-tlwg \
 vnc-common w3m at-spi toshset compiz-gtk compiz-plugins diveintopython \
 eog gconf2 gconf2-common gconf-editor gdebi-core rss-glx gnome-terminal-data \
 gnome-media-common gnome-netstatus-applet gnome-nettool gnome-screensaver \
-gnome-system-monitor gnome-system-tools
+gnome-system-monitor gnome-system-tools espeak-data
