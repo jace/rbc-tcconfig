@@ -4,8 +4,8 @@
 %license COPYING
 %readme README
 %description Provides support scripts for a variety of basic functions, including CGI scripts for system configuration.
-%version 0.3
-%release 2
+%version 0.3.1
+%release 1
 
 %requires lighttpd
 %requires python2.5
