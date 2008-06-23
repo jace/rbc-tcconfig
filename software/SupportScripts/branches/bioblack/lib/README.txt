@@ -1,0 +1,1 @@
+This folder contains Python modules that must be installed in Python's site-packages folder.
