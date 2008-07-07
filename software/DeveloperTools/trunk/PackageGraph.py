@@ -15,6 +15,7 @@ __revision__='$Id$'
 
 import sys
 import re
+import os.path
 from optparse import OptionParser
 
 class PackageDefinition:
@@ -55,6 +56,11 @@ class PackageDefinition:
             if line.startswith('%'): # XXX: Use regexes, you fool!
                 if tokens[0] == '%product':
                     self.id = tokens[1]
+                    if self.id != \
+                            os.path.basename(listfile).replace('.list', ''):
+                        raise ValueError, \
+                            "%s: mismatch with product name %s" % (
+                                listfile, self.id)
                 elif tokens[0] == '%version':
                     self.version = tokens[1]
                 elif tokens[0] == '%release':
