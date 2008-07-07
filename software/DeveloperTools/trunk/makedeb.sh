@@ -13,8 +13,8 @@ prog=`basename $0`;
 
 usage ()
 {
-    echo "Usage: $prog /path/to/folder ..."
-    echo -e "       $prog file-1.list file-2.list ...\n"
+    echo "Usage: $prog [/path/to/folder] ..."
+    echo -e "       $prog [file-1.list file-2.list ...]\n"
     echo "List files and folders can be specified in the same invocation."
 }
 
@@ -50,12 +50,17 @@ makelist ()
 #
 # main ()
 {
-    if [ $# -eq 0 ]; then
+    arg="$@"
+    if [ -z "$arg" ]; then
+        arg="$PWD"
+    fi
+    if [ "$1" = '-h' -o "$1" = '--help' ]; then
         usage
         exit 1
     fi
-
-    for LIST in "$@"; do
+    
+    echo `date +%D-%T` "$prog $arg"
+    for LIST in "$arg"; do
         if [ -d "$LIST" ]; then
             #
             # This will build entire sub-tree under $LIST. Of course if that is
