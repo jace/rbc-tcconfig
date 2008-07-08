@@ -9,21 +9,37 @@
 # Make sure all paths are *absolute* paths, beginning with slash (`/').
 #
 
+VERSION="0.1"
 prog=`basename $0`;
 
 usage ()
 {
-    echo "Usage: $prog [/path/to/folder] ..."
-    echo -e "       $prog [file-1.list file-2.list ...]\n"
+    echo "Usage: $prog [OPTIONS] [/path/to/folder] ..."
+    echo -e "       $prog [OPTIONS] [file-1.list file-2.list ...]\n"
     echo "List files and folders can be specified in the same invocation."
 }
 
+
+printh ()
+{
+    fmt="%-17s %s\n";
+
+    usage;
+    printf "\n%s\n" " Options:"
+    printf "$fmt"   "   -h, --help" "display this help"
+    printf "$fmt"   "   -v, --version" "display version information"
+    printf "\n%s\n" "Report bugs to <prasad.pandit@comat.com>"
+}
 
 makelist ()
 {
     DIRNAME=`dirname "$1"`
     LISTFILE=`basename "$1"`
     PRODUCT=${LISTFILE%%.list}
+
+    if [ "$PRODUCT" = "sources" ]; then
+        return
+    fi
 
     cd $DIRNAME
 
@@ -38,7 +54,7 @@ makelist ()
 
     DEBFILE=`find . -type f -name "$PRODUCT-$VERSION"*.deb`
     if [ "$LISTFILE" -nt "$DEBFILE" ]; then
-        echo "Rebuilding [00;33m$PRODUCT[00m..."
+        echo "Rebuilding $PRODUCT..."
         find . -name Makefile -execdir make -f '{}' \;
         sudo epm -f deb "$PRODUCT"
     fi
@@ -50,17 +66,27 @@ makelist ()
 #
 # main ()
 {
-    arg="$@"
+    arg=$@
     if [ -z "$arg" ]; then
         arg="$PWD"
     fi
-    if [ "$1" = '-h' -o "$1" = '--help' ]; then
-        usage
+    if [ "$1" = "-h" -o "$1" = "--help" ]; then
+        printh
         exit 1
+    elif [ "$1" = "-v" -o "$1" = "--version" ]; then
+        echo "$prog - $VERSION"
+        exit 1
+    elif [ `expr "$1" : "^[-]\+.*"` -gt 0 ]; then
+        echo "$prog: invalid option: \`$1'"
+        exit -1
     fi
     
     echo `date +%D-%T` "$prog $arg"
-    for LIST in "$arg"; do
+    for LIST in $arg; do
+        if [ `expr "$LIST" : "^[-]\+.*"` -gt 0 ]; then
+            echo "$prog: file name must not start with a \`-': $LIST"
+            continue
+        fi
         if [ -d "$LIST" ]; then
             #
             # This will build entire sub-tree under $LIST. Of course if that is
